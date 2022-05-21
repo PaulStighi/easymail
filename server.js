@@ -1,34 +1,22 @@
-import * as transport from './sensitiveData.json';
+import * as secretData from './sensitiveData.json';
 const express = require('express');
 const nodemailer = require('nodemailer');
 const pug = require('pug');
 
 const app = express();
-const port = 3000;
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`Server running on port ${secretData.port}`);
 });
 
-const transporter = nodemailer.createTransport(transport);
+const transporter = nodemailer.createTransport(secretData.transport);
 
 const compiledFunction = pug.compileFile('template.pug');
 
-const details = {
-    from: 'paul.stiegelbauer@student.upt.ro',
-    to: 'baubau@mailinator.com',
-    subject: 'Sending Email using Node.js',
-    html: compiledFunction({
-        title: 'Titlu',
-        message: 'Un header',
-        name: 'Paul',
-        youAreUsingPug: true
-    })
-};
-
+const details = Object.assign(secretData.details, compiledFunction(secretData.locals));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + 'index.html');
