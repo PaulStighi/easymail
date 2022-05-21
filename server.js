@@ -1,3 +1,4 @@
+import * as transport from './sensitiveData.json';
 const express = require('express');
 const nodemailer = require('nodemailer');
 const pug = require('pug');
@@ -12,13 +13,7 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-const transporter = nodemailer.createTransport({
-    service: 'outlook',
-    auth: {
-        user: 'paul.stiegelbauer@student.upt.ro',
-        pass: 'Palind1627'
-    }
-});
+const transporter = nodemailer.createTransport(transport);
 
 const compiledFunction = pug.compileFile('template.pug');
 
