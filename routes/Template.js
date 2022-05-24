@@ -9,3 +9,5 @@ const details = Object.assign(
     secretData.details,
     { 'html': compiledFunction(secretData.locals) }
 );
+
+module.exports.details = details
