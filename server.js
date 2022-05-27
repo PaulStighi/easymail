@@ -1,4 +1,4 @@
-const secretData = require('./sensitiveData.json');
+const secretData = require('./config/sensitiveData.json');
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();

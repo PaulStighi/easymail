@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
-const secretData = require('./../sensitiveData.json');
+const secretData = require('./../config/sensitiveData.json');
 const template = require('./Templater');
 
 const transporter = nodemailer.createTransport(secretData.transport);

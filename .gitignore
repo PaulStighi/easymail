@@ -1,5 +1,5 @@
 # Manually defined gitignored files
-sensitiveData.json
+config/sensitiveData.json
 
 # Logs
 logs
