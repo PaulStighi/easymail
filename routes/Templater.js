@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const secretData = require('../sensitiveData.json');
 const pug = require('pug');
-const secretData = require('./../sensitiveData.json');
 
 const compiledFunction = pug.compileFile('template.pug');
 
@@ -10,4 +10,9 @@ const details = Object.assign(
     { 'html': compiledFunction(secretData.locals) }
 );
 
-module.exports.details = details
+router.post('/', async function(req, res) {
+    res.send('Templater!');
+});
+
+module.exports.details = details;
+module.exports = router;

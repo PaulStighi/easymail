@@ -4,7 +4,7 @@ const button = document.getElementById('myButton');
 button.addEventListener('click', function (e) {
   console.log('button was clicked');
 
-  fetch('/sendmail', { method: 'POST' })
+  fetch('/sender', { method: 'POST' })
     .then(function (response) {
       if (response.ok) {
         console.log('Click was recorded');
