@@ -14,5 +14,5 @@ router.post('/', async function(req, res) {
     res.send('Templater!');
 });
 
-module.exports.details = details;
 module.exports = router;
+module.exports.details = details;
