@@ -1,5 +1,6 @@
 # Manually defined gitignored files
 config/sensitiveData.json
+package-lock.json
 
 # Logs
 logs

@@ -6,15 +6,18 @@ const template = require('./Templater');
 
 const transporter = nodemailer.createTransport(secretData.transport);
 
-router.post('/', async function(req, res) {
-    transporter.sendMail(template.details, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-
+router.post('/sendByTemplateId', async function(req, res) {
+    await template.compileTemplate(req.body.templateId)
+        .then((details) => {
+            transporter.sendMail(details, (error, info) => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+        });
+        
     res.send('End send!');
 });
 
