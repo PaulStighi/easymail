@@ -6,7 +6,7 @@ const template = require('./Templater');
 
 const transporter = nodemailer.createTransport(secretData.transport);
 
-router.post('/sendByTemplateId', async function(req, res) {
+router.post('/sendByTemplateId', async function (req, res) {
     await template.compileTemplate(req.body.templateId)
         .then((details) => {
             transporter.sendMail(details, (error, info) => {
@@ -17,7 +17,7 @@ router.post('/sendByTemplateId', async function(req, res) {
                 }
             });
         });
-        
+
     res.send('End send!');
 });
 

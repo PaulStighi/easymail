@@ -5,6 +5,6 @@ const templateSchema = new mongoose.Schema({
     details: { type: Object },
     locals: { type: Object }
 
-}, {collection:'templates'});
+}, { collection: 'templates' });
 
 module.exports = mongoose.model('Template', templateSchema);
