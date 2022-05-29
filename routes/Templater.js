@@ -30,9 +30,7 @@ router.post('/save', async function (req, res) {
     const T_content = importFile.importFile(req.query.path);
 
     req.body = Object.assign(
-        { 'content': T_content },
-        _.pick(req.body, 'details'),
-        _.pick(req.body, 'locals'),
+        { 'content': T_content }
     );
 
     const template = new Template(req.body);
