@@ -13,10 +13,8 @@ router.post('/save', async function (req, res) {
 
     const addr = _.split(B_content, "\r\n");
 
-    console.log(addr);
-
     const batchlist = new Batchlist(Object.assign(
-        { 'addresses': addr }
+        { 'to': addr }
     ));
 
     try {

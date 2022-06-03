@@ -3,19 +3,22 @@ const router = express.Router();
 const pug = require('pug');
 const _ = require('lodash');
 const Template = require('../models/Template');
+const Batchlist = require('../models/Batchlist');
 const importFile = require('../scripts/importFile');
 
-async function compileTemplate(templateId) {
+async function compileTemplate(task) {
+    const templateId = _.get(task, 'templateId');
+    const batchlist = _.get(await Batchlist.findById(_.get(task, 'batchlistId')).exec(), 'to');
+
     return Template.findById(templateId).exec().then((template) => {
         const T_content = _.pick(template, 'content');
-        const T_details = _.pick(template, 'details');
-        const T_locals = _.pick(template, 'locals');
 
         const compiledFunction = pug.compile(T_content.content);
 
         const details = Object.assign(
-            T_details.details,
-            { 'html': compiledFunction(T_locals.locals) }
+            _.get(task, 'details'),
+            { 'to': _.join(batchlist, ', ') },
+            { 'html': compiledFunction(_.get(task, 'locals')) }
         );
 
         return details;
@@ -45,7 +48,7 @@ router.post('/save', async function (req, res) {
 });
 
 router.get('/findById', async function (req, res) {
-    const template = await Template.find(req.body.id).exec();
+    const template = await Template.findById(req.body.id).exec();
     res.status(200).json(template);
 });
 
