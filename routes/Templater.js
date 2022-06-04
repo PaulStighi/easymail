@@ -1,27 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const pug = require('pug');
 const _ = require('lodash');
 const Template = require('../models/Template');
 const importFile = require('../scripts/importFile');
-
-async function compileTemplate(task, target) {
-    const templateId = _.get(task, 'templateId');
-
-    return Template.findById(templateId).exec().then((template) => {
-        const T_content = _.pick(template, 'content');
-
-        const compiledFunction = pug.compile(T_content.content);
-
-        const details = Object.assign(
-            _.get(task, 'details'),
-            { 'to': target },
-            { 'html': compiledFunction(_.get(task, 'locals')) }
-        );
-
-        return details;
-    });
-}
 
 router.post('/', async function (req, res) {
     res.send('Templater!');
@@ -51,4 +32,3 @@ router.get('/findById', async function (req, res) {
 });
 
 module.exports = router;
-module.exports.compileTemplate = compileTemplate;

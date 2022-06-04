@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const secretData = require('./../config/sensitiveData.json');
-const template = require('./Templater');
 const _ = require('lodash');
 const Task = require('../models/Task');
 const Batchlist = require('../models/Batchlist');
+const compileTemplate = require('../scripts/compileTemplate');
 
-const transporter = nodemailer.createTransport(secretData.transport);
 
 router.post('/saveTask', async function (req, res) {
     const task = new Task(Object.assign(
@@ -16,8 +15,8 @@ router.post('/saveTask', async function (req, res) {
         { 'batchlistId': req.body.batchlistId },
         { 'details': _.get(req.body, 'details') },
         { 'locals': _.get(req.body, 'locals') },
-    ));
-
+        ));
+        
     try {
         await task.save();
         res.status(200).json({ 'success': true, 'message': 'Task details saved' });
@@ -29,9 +28,10 @@ router.post('/saveTask', async function (req, res) {
 router.post('/executeTask', async function (req, res) {
     const task = await Task.findById(req.body.id).exec();
     const batchlist = _.get(await Batchlist.findById(_.get(task, 'batchlistId')).exec(), 'to');
+    const transporter = nodemailer.createTransport(secretData.transport);
 
     _.forEach(batchlist, (target) => {
-        return template.compileTemplate(task, target)
+        return compileTemplate.compileTemplate(task, target)
             .then((details) => {
                 transporter.sendMail(details, (error, info) => {
                     if (error) {
