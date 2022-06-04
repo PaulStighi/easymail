@@ -5,23 +5,9 @@ const secretData = require('./../config/sensitiveData.json');
 const template = require('./Templater');
 const _ = require('lodash');
 const Task = require('../models/Task');
+const Batchlist = require('../models/Batchlist');
 
 const transporter = nodemailer.createTransport(secretData.transport);
-
-// router.post('/sendByTemplateId', async function (req, res) {
-//     await template.compileTemplate(req.body.templateId)
-//         .then((details) => {
-//             transporter.sendMail(details, (error, info) => {
-//                 if (error) {
-//                     console.log(error);
-//                 } else {
-//                     console.log('Email sent: ' + info.response);
-//                 }
-//             });
-//         });
-
-//     res.send('End send!');
-// });
 
 router.post('/saveTask', async function (req, res) {
     const task = new Task(Object.assign(
@@ -42,19 +28,23 @@ router.post('/saveTask', async function (req, res) {
 
 router.post('/executeTask', async function (req, res) {
     const task = await Task.findById(req.body.id).exec();
+    const batchlist = _.get(await Batchlist.findById(_.get(task, 'batchlistId')).exec(), 'to');
 
-    await template.compileTemplate(task)
-        .then((details) => {
-            transporter.sendMail(details, (error, info) => {
-                if (error) {
-                    console.log(error);
-                    res.status(400).json({ 'success': false, 'message': ('Error in saving Template details: ' + error) });
-                } else {
-                    console.log('Email sent: ' + info.response);
-                    res.status(200).json({ 'success': true, 'message': ('Email sent: ' + info.response) });
-                }
+    _.forEach(batchlist, (target) => {
+        return template.compileTemplate(task, target)
+            .then((details) => {
+                transporter.sendMail(details, (error, info) => {
+                    if (error) {
+                        console.log(error);
+                        res.status(400).json({ 'success': false, 'message': ('Error in saving Template details: ' + error) });
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
             });
-        });
+    });
+    
+    res.status(200).json({ 'success': true, 'message': 'Emails sent!' });
 });
 
 module.exports = router;

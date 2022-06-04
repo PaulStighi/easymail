@@ -3,12 +3,10 @@ const router = express.Router();
 const pug = require('pug');
 const _ = require('lodash');
 const Template = require('../models/Template');
-const Batchlist = require('../models/Batchlist');
 const importFile = require('../scripts/importFile');
 
-async function compileTemplate(task) {
+async function compileTemplate(task, target) {
     const templateId = _.get(task, 'templateId');
-    const batchlist = _.get(await Batchlist.findById(_.get(task, 'batchlistId')).exec(), 'to');
 
     return Template.findById(templateId).exec().then((template) => {
         const T_content = _.pick(template, 'content');
@@ -17,7 +15,7 @@ async function compileTemplate(task) {
 
         const details = Object.assign(
             _.get(task, 'details'),
-            { 'to': _.join(batchlist, ', ') },
+            { 'to': target },
             { 'html': compiledFunction(_.get(task, 'locals')) }
         );
 
