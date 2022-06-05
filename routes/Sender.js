@@ -8,6 +8,11 @@ const Batchlist = require('../models/Batchlist');
 const compileTemplate = require('../scripts/compileTemplate');
 const transporter = nodemailer.createTransport(secretData.transport);
 
+router.post('/', async function (req, res) {
+    res.send('Sender!');
+});
+
+// Create
 router.post('/saveTask', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Task in saving...');
 
@@ -25,6 +30,14 @@ router.post('/saveTask', async function (req, res) {
     } catch (err) {
         res.status(400).json({ 'success': false, 'message': 'Error in saving Task details: ' + err });
     }
+});
+
+// Read
+router.get('/findById', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Task in finding...');
+
+    const task = await Task.findById(req.body.id).exec();
+    res.status(200).json(task);
 });
 
 router.post('/executeTask', async function (req, res) {

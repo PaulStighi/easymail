@@ -8,6 +8,7 @@ router.post('/', async function (req, res) {
     res.send('Batch!');
 });
 
+// Create
 router.post('/save', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Batchlist in saving...');
 
@@ -27,5 +28,15 @@ router.post('/save', async function (req, res) {
     }
 
 });
+
+// Read
+router.get('/findById', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Batchlist in finding...');
+
+    const batchlist = await Batchlist.findById(req.body.id).exec();
+    res.status(200).json(batchlist);
+});
+
+// Delete
 
 module.exports = router;

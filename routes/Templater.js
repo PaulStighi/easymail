@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const _ = require('lodash');
 const Template = require('../models/Template');
 const importFile = require('../scripts/importFile');
 
@@ -8,6 +7,7 @@ router.post('/', async function (req, res) {
     res.send('Templater!');
 });
 
+// Create
 router.post('/save', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Template in saving...');
     
@@ -28,6 +28,7 @@ router.post('/save', async function (req, res) {
 
 });
 
+// Read
 router.get('/findById', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Template in finding...');
 
