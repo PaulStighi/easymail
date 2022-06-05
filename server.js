@@ -11,7 +11,7 @@ const db_url = 'mongodb://localhost:27017/mail-pug-inator';
 mongoose.connect(db_url,
     { useNewUrlParser: true },
     function () {
-        console.log('connected to database');
+        console.log('connected to database\n');
     }
 );
 

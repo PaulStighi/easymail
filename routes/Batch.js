@@ -9,6 +9,8 @@ router.post('/', async function (req, res) {
 });
 
 router.post('/save', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Batchlist in saving...');
+
     const B_content = importFile.importFile(req.query.path);
 
     const addr = _.split(B_content, "\r\n");
@@ -18,8 +20,8 @@ router.post('/save', async function (req, res) {
     ));
 
     try {
-        await batchlist.save();
-        res.status(200).json({ 'success': true, 'message': 'Batchlist details saved' });
+        const doc = await batchlist.save();
+        res.status(200).json({ 'success': true, 'message': 'Batchlist details saved', result: doc });
     } catch (err) {
         res.status(400).json({ 'success': false, 'message': 'Error in saving Template details: ' + err });
     }

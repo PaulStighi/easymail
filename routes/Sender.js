@@ -6,9 +6,11 @@ const _ = require('lodash');
 const Task = require('../models/Task');
 const Batchlist = require('../models/Batchlist');
 const compileTemplate = require('../scripts/compileTemplate');
-
+const transporter = nodemailer.createTransport(secretData.transport);
 
 router.post('/saveTask', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Task in saving...');
+
     const task = new Task(Object.assign(
         // { 'scheduledFor': req.body.scheduledFor },
         { 'templateId': req.body.templateId },
@@ -18,17 +20,18 @@ router.post('/saveTask', async function (req, res) {
         ));
         
     try {
-        await task.save();
-        res.status(200).json({ 'success': true, 'message': 'Task details saved' });
+        const doc = await task.save();
+        res.status(200).json({ 'success': true, 'message': 'Task details saved', result: doc });
     } catch (err) {
         res.status(400).json({ 'success': false, 'message': 'Error in saving Task details: ' + err });
     }
 });
 
 router.post('/executeTask', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Task in execution...');
+
     const task = await Task.findById(req.body.id).exec();
     const batchlist = _.get(await Batchlist.findById(_.get(task, 'batchlistId')).exec(), 'to');
-    const transporter = nodemailer.createTransport(secretData.transport);
 
     _.forEach(batchlist, (target) => {
         return compileTemplate.compileTemplate(task, target)
@@ -38,7 +41,7 @@ router.post('/executeTask', async function (req, res) {
                         console.log(error);
                         res.status(400).json({ 'success': false, 'message': ('Error in saving Template details: ' + error) });
                     } else {
-                        console.log('Email sent: ' + info.response);
+                        console.log('[' + new Date().toUTCString() + '] Email sent: ' + info.response + ' to ' + target);
                     }
                 });
             });
