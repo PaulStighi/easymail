@@ -22,8 +22,8 @@ router.post('/saveTask', async function (req, res) {
         { 'batchlistId': req.body.batchlistId },
         { 'details': _.get(req.body, 'details') },
         { 'locals': _.get(req.body, 'locals') },
-        ));
-        
+    ));
+
     try {
         const doc = await task.save();
         res.status(200).json({ 'success': true, 'message': 'Task details saved', result: doc });
@@ -59,7 +59,7 @@ router.post('/executeTask', async function (req, res) {
                 });
             });
     });
-    
+
     res.status(200).json({ 'success': true, 'message': 'Emails sent!' });
 });
 

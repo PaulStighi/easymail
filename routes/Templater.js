@@ -10,7 +10,7 @@ router.post('/', async function (req, res) {
 // Create
 router.post('/save', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Template in saving...');
-    
+
     const T_content = importFile.importFile(req.query.path);
 
     req.body = Object.assign(
