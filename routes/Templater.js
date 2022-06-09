@@ -3,7 +3,7 @@ const router = express.Router();
 const Template = require('../models/Template');
 const importFile = require('../scripts/importFile');
 
-router.post('/', async function (req, res) {
+router.get('/', async function (req, res) {
     res.send('Templater!');
 });
 
@@ -28,12 +28,39 @@ router.post('/save', async function (req, res) {
 
 });
 
-// Read
+// Read one
 router.get('/findById', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Template in finding...');
 
     const template = await Template.findById(req.body.id).exec();
     res.status(200).json(template);
+});
+
+// Read all
+router.get('/read', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Template in finding all with condition...');
+
+    const templates = await Template.find(req.body.condition ? JSON.parse(req.body.condition) : {}).exec();
+
+    res.status(200).json(templates);
+});
+
+// Delete one
+router.delete('/deleteById', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Template in deleting...');
+
+    Template.findOneAndDelete({ '_id': req.body.id })
+        .then((doc) => {
+            if (!doc) {
+                res.status(400).json({ 'success': false, 'message': 'No template matching the id: ' + req.body.id });
+            }
+            else {
+                res.status(200).json({ doc, 'message': 'Template deleted successfully!' });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({ 'message': 'Error in saving Template details: ' + err });
+        })
 });
 
 module.exports = router;

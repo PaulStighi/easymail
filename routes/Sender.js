@@ -8,36 +8,8 @@ const Batchlist = require('../models/Batchlist');
 const compileTemplate = require('../scripts/compileTemplate');
 const transporter = nodemailer.createTransport(secretData.transport);
 
-router.post('/', async function (req, res) {
+router.get('/', async function (req, res) {
     res.send('Sender!');
-});
-
-// Create
-router.post('/saveTask', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Task in saving...');
-
-    const task = new Task(Object.assign(
-        // { 'scheduledFor': req.body.scheduledFor },
-        { 'templateId': req.body.templateId },
-        { 'batchlistId': req.body.batchlistId },
-        { 'details': _.get(req.body, 'details') },
-        { 'locals': _.get(req.body, 'locals') },
-    ));
-
-    try {
-        const doc = await task.save();
-        res.status(200).json({ 'success': true, 'message': 'Task details saved', result: doc });
-    } catch (err) {
-        res.status(400).json({ 'success': false, 'message': 'Error in saving Task details: ' + err });
-    }
-});
-
-// Read
-router.get('/findById', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Task in finding...');
-
-    const task = await Task.findById(req.body.id).exec();
-    res.status(200).json(task);
 });
 
 router.post('/executeTask', async function (req, res) {

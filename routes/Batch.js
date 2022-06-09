@@ -4,7 +4,7 @@ const importFile = require('../scripts/importFile');
 const _ = require('lodash');
 const Batchlist = require('../models/Batchlist');
 
-router.post('/', async function (req, res) {
+router.get('/', async function (req, res) {
     res.send('Batch!');
 });
 
@@ -24,12 +24,12 @@ router.post('/save', async function (req, res) {
         const doc = await batchlist.save();
         res.status(200).json({ 'success': true, 'message': 'Batchlist details saved', result: doc });
     } catch (err) {
-        res.status(400).json({ 'success': false, 'message': 'Error in saving Template details: ' + err });
+        res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: ' + err });
     }
 
 });
 
-// Read
+// Read one
 router.get('/findById', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Batchlist in finding...');
 
@@ -37,6 +37,31 @@ router.get('/findById', async function (req, res) {
     res.status(200).json(batchlist);
 });
 
-// Delete
+// Read all
+router.get('/read', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Batchlist in finding all with condition...');
+
+    const batchlists = await Batchlist.find(req.body.condition ? JSON.parse(req.body.condition) : {}).exec();
+
+    res.status(200).json(batchlists);
+});
+
+// Delete one
+router.delete('/deleteById', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Batchlist in deleting...');
+
+    Batchlist.findOneAndDelete({ '_id': req.body.id })
+        .then((doc) => {
+            if (!doc) {
+                res.status(400).json({ 'success': false, 'message': 'No batchlist matching the id: ' + req.body.id });
+            }
+            else {
+                res.status(200).json({ doc, 'message': 'Batchlist deleted successfully!' });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({ 'message': 'Error in saving Batchlist details: ' + err });
+        })
+});
 
 module.exports = router;

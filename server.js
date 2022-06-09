@@ -6,9 +6,7 @@ app.use(express.static('public'));
 
 // DB Connection
 
-const db_url = 'mongodb://localhost:27017/mail-pug-inator';
-
-mongoose.connect(db_url,
+mongoose.connect(secretData.db_url,
     { useNewUrlParser: true },
     function () {
         console.log('connected to database\n');
@@ -27,6 +25,7 @@ app.get('/', (req, res) => {
 app.use('/batch', require('./routes/Batch'));
 app.use('/scheduler', require('./routes/Scheduler'));
 app.use('/sender', require('./routes/Sender'));
+app.use('/task', require('./routes/Task'));
 app.use('/templater', require('./routes/Templater'));
 app.use('/temporary', require('./routes/Temporary'));
 app.use('/verify', require('./routes/Verify'));

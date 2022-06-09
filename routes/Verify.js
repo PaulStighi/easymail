@@ -5,7 +5,7 @@ const secretData = require('./../config/sensitiveData.json');
 const Verifier = require('email-verifier');
 const verifier = new Verifier(secretData.emailVerificationAPIKey, { validateDNS: true, validateSMTP: true });
 
-router.post('/', async function (req, res) {
+router.get('/', async function (req, res) {
     res.send('Verify!');
 });
 
