@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
-const secretData = require('./../config/sensitiveData.json');
-const Verifier = require('email-verifier');
-const verifier = new Verifier(secretData.emailVerificationAPIKey, { validateDNS: true, validateSMTP: true });
+const Batchlist = require('../models/Batchlist');
+const verifyEmail = require('../scripts/verifyEmail');
 
 router.get('/', async function (req, res) {
     res.send('Verify!');
@@ -12,25 +11,41 @@ router.get('/', async function (req, res) {
 router.get('/email', async function (req, res) {
     console.log('[' + new Date().toUTCString() + '] Email address in validation...');
 
-    const email = _.get(req.body, 'email');
+    if(await verifyEmail.verifyEmail(_.get(req.body, 'email'))) {
+        res.status(200).json({ 'success': true, 'message': 'Address is valid' });
+    }
+    else {
+        res.status(200).json({ 'success': false, 'message': 'Address is not valid' });
+    }
+});
 
-    verifier.verify(email, (error, data) => {
-        if (error) {
-            console.log(error);
-            res.status(400).json({ 'success': false, 'message': 'Error in verifing email' });
-        }
+router.get('/batch', async function (req, res) {
+    console.log('[' + new Date().toUTCString() + '] Batch email address in validation...');
 
-        const formatCheck = _.isEqual(_.get(data, 'formatCheck'), 'true');
-        const dnsCheck = _.isEqual(_.get(data, 'dnsCheck'), 'true');
-        const smtpCheck = _.isEqual(_.get(data, 'smtpCheck'), 'true');
+    const batchlist = _.get(await Batchlist.findById(req.body.batchId).exec(), 'to');
+    let results = [];
 
-        if (formatCheck && dnsCheck && smtpCheck) {
-            res.status(200).json({ 'success': true, 'message': 'Address is valid' });
+    for (const email of batchlist) {
+        if(await verifyEmail.verifyEmail(email)) {
+            results.push(
+                {
+                    'address': email,
+                    'valid': true
+                }
+            );
         }
         else {
-            res.status(200).json({ 'success': false, 'message': 'Address is not valid' });
+            results.push(
+                {
+                    'address': email,
+                    'valid': false
+                }
+            );
         }
-    });
+    };
+
+    res.status(200).json({ 'success': true, 'message': 'Batch verified', result: results });
+
 });
 
 module.exports = router;
