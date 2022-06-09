@@ -9,7 +9,7 @@ router.get('/', async function (req, res) {
 
 // Create
 router.post('/saveTask', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Task in saving...');
+    console.log('[' + new Date().toLocaleString() + '] Task in saving...');
 
     const task = new Task(Object.assign(
         // { 'scheduledFor': req.body.scheduledFor },
@@ -29,7 +29,7 @@ router.post('/saveTask', async function (req, res) {
 
 // Read one
 router.get('/findById', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Task in finding...');
+    console.log('[' + new Date().toLocaleString() + '] Task in finding...');
 
     const task = await Task.findById(req.body.id).exec();
     res.status(200).json(task);
@@ -37,7 +37,7 @@ router.get('/findById', async function (req, res) {
 
 // Read all
 router.get('/read', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Task in finding all with condition...');
+    console.log('[' + new Date().toLocaleString() + '] Task in finding all with condition...');
 
     const tasks = await Task.find(req.body.condition ? JSON.parse(req.body.condition) : {}).exec();
 
@@ -46,7 +46,7 @@ router.get('/read', async function (req, res) {
 
 // Delete one
 router.delete('/deleteById', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Task in deleting...');
+    console.log('[' + new Date().toLocaleString() + '] Task in deleting...');
 
     Task.findOneAndDelete({ '_id': req.body.id })
         .then((doc) => {

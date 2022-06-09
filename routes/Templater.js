@@ -9,7 +9,7 @@ router.get('/', async function (req, res) {
 
 // Create
 router.post('/save', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Template in saving...');
+    console.log('[' + new Date().toLocaleString() + '] Template in saving...');
 
     const T_content = importFile.importFile(req.query.path);
 
@@ -30,7 +30,7 @@ router.post('/save', async function (req, res) {
 
 // Read one
 router.get('/findById', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Template in finding...');
+    console.log('[' + new Date().toLocaleString() + '] Template in finding...');
 
     const template = await Template.findById(req.body.id).exec();
     res.status(200).json(template);
@@ -38,7 +38,7 @@ router.get('/findById', async function (req, res) {
 
 // Read all
 router.get('/read', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Template in finding all with condition...');
+    console.log('[' + new Date().toLocaleString() + '] Template in finding all with condition...');
 
     const templates = await Template.find(req.body.condition ? JSON.parse(req.body.condition) : {}).exec();
 
@@ -47,7 +47,7 @@ router.get('/read', async function (req, res) {
 
 // Delete one
 router.delete('/deleteById', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Template in deleting...');
+    console.log('[' + new Date().toLocaleString() + '] Template in deleting...');
 
     Template.findOneAndDelete({ '_id': req.body.id })
         .then((doc) => {

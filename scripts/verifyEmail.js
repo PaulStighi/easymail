@@ -1,7 +1,6 @@
 const secretData = require('./../config/sensitiveData.json');
 const Verifier = require('email-verifier');
 const _ = require('lodash');
-const util = require('util');
 
 const verifier = new Verifier(secretData.emailVerificationAPIKey, { validateDNS: true, validateSMTP: true, retries: 2 });
 

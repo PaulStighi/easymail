@@ -10,7 +10,7 @@ router.get('/', async function (req, res) {
 
 // Create
 router.post('/save', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Batchlist in saving...');
+    console.log('[' + new Date().toLocaleString() + '] Batchlist in saving...');
 
     const B_content = importFile.importFile(req.query.path);
 
@@ -31,7 +31,7 @@ router.post('/save', async function (req, res) {
 
 // Read one
 router.get('/findById', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Batchlist in finding...');
+    console.log('[' + new Date().toLocaleString() + '] Batchlist in finding...');
 
     const batchlist = await Batchlist.findById(req.body.id).exec();
     res.status(200).json(batchlist);
@@ -39,7 +39,7 @@ router.get('/findById', async function (req, res) {
 
 // Read all
 router.get('/read', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Batchlist in finding all with condition...');
+    console.log('[' + new Date().toLocaleString() + '] Batchlist in finding all with condition...');
 
     const batchlists = await Batchlist.find(req.body.condition ? JSON.parse(req.body.condition) : {}).exec();
 
@@ -48,7 +48,7 @@ router.get('/read', async function (req, res) {
 
 // Delete one
 router.delete('/deleteById', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Batchlist in deleting...');
+    console.log('[' + new Date().toLocaleString() + '] Batchlist in deleting...');
 
     Batchlist.findOneAndDelete({ '_id': req.body.id })
         .then((doc) => {

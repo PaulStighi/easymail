@@ -13,7 +13,7 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/executeTask', async function (req, res) {
-    console.log('[' + new Date().toUTCString() + '] Task in execution...');
+    console.log('[' + new Date().toLocaleString() + '] Task in execution...');
 
     const task = await Task.findById(req.body.id).exec();
     const batchlist = _.get(await Batchlist.findById(_.get(task, 'batchlistId')).exec(), 'to');
@@ -26,7 +26,7 @@ router.post('/executeTask', async function (req, res) {
                         console.log(error);
                         res.status(400).json({ 'success': false, 'message': ('Error in saving Template details: ' + error) });
                     } else {
-                        console.log('[' + new Date().toUTCString() + '] Email sent: ' + info.response + ' to ' + target);
+                        console.log('[' + new Date().toLocaleString() + '] Email sent: ' + info.response + ' to ' + target);
                     }
                 });
             });
