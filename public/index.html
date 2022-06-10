@@ -6,9 +6,180 @@
   <title>Mock-up presentation mail-pug-inator</title>
 </head>
 
+<style>
+  body {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  hr {
+    height: 0px;
+    display: table-row;
+    border-bottom: 2pt solid black;
+  }
+
+  form {
+    display: table-row;
+  }
+
+  label {
+    display: table-cell;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  input {
+    display: table-cell;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+</style>
+
 <body>
-  <h1>Node + Express example</h1>
-  <button id="myButton">Send email!</button>
+  <h1>Email engine usage example</h1>
+
+  <!--                            TEMPLATER                            -->
+
+  <hr><br>
+
+  <form action="/templater/save" method="POST">
+    <label for="path">Enter template path for Template_save: </label>
+    <input id="path" type="text" size="100" name="path" placeholder="Path string">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/templater/findById" method="GET">
+    <label for="templateId">Enter templateId for Template_findById: </label>
+    <input id="templateId" type="text" size="100" name="templateId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/templater/read" method="GET">
+    <label for="condition">Enter condition for Template_findAll: </label>
+    <input id="condition" type="text" size="100" name="condition" placeholder="Condition string">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/templater/deleteById" method="POST">
+    <label for="templateId">Enter templateId for Template_deleteById: </label>
+    <input id="templateId" type="text" size="100" name="templateId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <!--                            BATCH                            -->
+
+  <hr><br>
+
+  <form action="/batch/save" method="POST">
+    <label for="path">Enter batchlist path for Batch_save: </label>
+    <input id="path" type="text" size="100" name="path" placeholder="Path string">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/batch/findById" method="GET">
+    <label for="batchId">Enter batchId for Batch_findById: </label>
+    <input id="batchId" type="text" size="100" name="batchId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/batch/read" method="GET">
+    <label for="condition">Enter condition for Batch_findAll: </label>
+    <input id="condition" type="text" size="100" name="condition" placeholder="Condition string">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/batch/deleteById" method="POST">
+    <label for="batchId">Enter batchId for Batch_deleteById: </label>
+    <input id="batchId" type="text" size="100" name="batchId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <!--                            VERIFY                            -->
+
+  <hr><br>
+
+  <form action="/verify/email" method="GET">
+    <label for="email">Enter email address for Verify_email: </label>
+    <input id="email" type="text" size="100" name="email" placeholder="Email address">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/verify/batch" method="GET">
+    <label for="batchId">Enter batchId for Verify_batch: </label>
+    <input id="batchId" type="text" size="100" name="batchId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <!--                            TASK                            -->
+
+  <hr><br>
+
+  <form action="/task/save" method="POST">
+    <label for="path">Enter task path for Task_save: </label>
+    <input id="path" type="text" size="100" name="path" placeholder="Path string">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/task/findById" method="GET">
+    <label for="taskId">Enter taskId for Task_findById: </label>
+    <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/task/read" method="GET">
+    <label for="condition">Enter condition for Task_findAll: </label>
+    <input id="condition" type="text" size="100" name="condition" placeholder="Condition string">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <form action="/task/deleteById" method="POST">
+    <label for="taskId">Enter taskId for Task_deleteById: </label>
+    <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
+  <!--                            SENDER                            -->
+
+  <hr><br>
+
+  <form action="/sender/executeTask" method="POST">
+    <label for="taskId">Enter taskId for Sender_executeTask: </label>
+    <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+  <hr>
+
 </body>
 <script src="client.js"></script>
 

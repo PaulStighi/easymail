@@ -15,7 +15,7 @@ router.get('/', async function (req, res) {
 router.post('/executeTask', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Task in execution...');
 
-    const task = await Task.findById(req.body.id).exec();
+    const task = await Task.findById(req.body.taskId).exec();
     const batchlist = _.get(await Batchlist.findById(_.get(task, 'batchlistId')).exec(), 'to');
 
     _.forEach(batchlist, (target) => {

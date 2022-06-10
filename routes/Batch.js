@@ -12,7 +12,7 @@ router.get('/', async function (req, res) {
 router.post('/save', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batchlist in saving...');
 
-    const B_content = importFile.importFile(req.query.path);
+    const B_content = importFile.importFile(req.body.path);
 
     const addr = _.split(B_content, "\r\n");
 
@@ -33,7 +33,7 @@ router.post('/save', async function (req, res) {
 router.get('/findById', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batchlist in finding...');
 
-    const batchlist = await Batchlist.findById(req.body.id).exec();
+    const batchlist = await Batchlist.findById(req.query.batchId).exec();
     res.status(200).json(batchlist);
 });
 
@@ -41,19 +41,19 @@ router.get('/findById', async function (req, res) {
 router.get('/read', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batchlist in finding all with condition...');
 
-    const batchlists = await Batchlist.find(req.body.condition ? JSON.parse(req.body.condition) : {}).exec();
+    const batchlists = await Batchlist.find(req.query.condition ? JSON.parse(req.query.condition) : {}).exec();
 
     res.status(200).json(batchlists);
 });
 
 // Delete one
-router.delete('/deleteById', async function (req, res) {
+router.post('/deleteById', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batchlist in deleting...');
 
-    Batchlist.findOneAndDelete({ '_id': req.body.id })
+    Batchlist.findOneAndDelete({ '_id': req.body.batchId })
         .then((doc) => {
             if (!doc) {
-                res.status(400).json({ 'success': false, 'message': 'No batchlist matching the id: ' + req.body.id });
+                res.status(400).json({ 'success': false, 'message': 'No batchlist matching the id: ' + req.body.batchId });
             }
             else {
                 res.status(200).json({ doc, 'message': 'Batchlist deleted successfully!' });

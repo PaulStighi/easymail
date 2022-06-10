@@ -11,7 +11,7 @@ router.get('/', async function (req, res) {
 router.get('/email', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Email address in validation...');
 
-    if(await verifyEmail.verifyEmail(_.get(req.body, 'email'))) {
+    if (await verifyEmail.verifyEmail(req.query.email)) {
         res.status(200).json({ 'success': true, 'message': 'Address is valid' });
     }
     else {
@@ -22,11 +22,11 @@ router.get('/email', async function (req, res) {
 router.get('/batch', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batch email address in validation...');
 
-    const batchlist = _.get(await Batchlist.findById(req.body.batchId).exec(), 'to');
+    const batchlist = _.get(await Batchlist.findById(req.query.batchId).exec(), 'to');
     let results = [];
 
     for (const email of batchlist) {
-        if(await verifyEmail.verifyEmail(email)) {
+        if (await verifyEmail.verifyEmail(email)) {
             results.push(
                 {
                     'address': email,

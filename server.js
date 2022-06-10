@@ -17,6 +17,8 @@ mongoose.connect(secretData.db_url,
 
 app.use(express.json());
 app.set('view engine', 'pug');
+app.set('json spaces', 2);
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + 'index.html');
