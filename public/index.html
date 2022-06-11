@@ -25,8 +25,7 @@
 
   label {
     display: table-cell;
-    margin-left: 10px;
-    margin-right: 10px;
+    text-align: center;
   }
 
   input {
@@ -37,14 +36,14 @@
 </style>
 
 <body>
-  <h1>Email engine usage example</h1>
+  <h1 style="display: flex; justify-content: center;">Email engine usage example</h1>
 
   <!--                            TEMPLATER                            -->
 
   <hr><br>
 
   <form action="/templater/save" method="POST">
-    <label for="path">Enter template path for Template_save: </label>
+    <label for="path">Enter template path for <b>Template_save</b>: </label>
     <input id="path" type="text" size="100" name="path" placeholder="Path string">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -52,7 +51,7 @@
   <br>
 
   <form action="/templater/findById" method="GET">
-    <label for="templateId">Enter templateId for Template_findById: </label>
+    <label for="templateId">Enter templateId for <b>Template_findById</b>: </label>
     <input id="templateId" type="text" size="100" name="templateId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -60,7 +59,7 @@
   <br>
 
   <form action="/templater/read" method="GET">
-    <label for="condition">Enter condition for Template_findAll: </label>
+    <label for="condition">Enter condition for <b>Template_findAll</b>: </label>
     <input id="condition" type="text" size="100" name="condition" placeholder="Condition string">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -68,7 +67,7 @@
   <br>
 
   <form action="/templater/deleteById" method="POST">
-    <label for="templateId">Enter templateId for Template_deleteById: </label>
+    <label for="templateId">Enter templateId for <b>Template_deleteById</b>: </label>
     <input id="templateId" type="text" size="100" name="templateId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -80,7 +79,7 @@
   <hr><br>
 
   <form action="/batch/save" method="POST">
-    <label for="path">Enter batchlist path for Batch_save: </label>
+    <label for="path">Enter batchlist path for <b>Batch_save</b>: </label>
     <input id="path" type="text" size="100" name="path" placeholder="Path string">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -88,7 +87,7 @@
   <br>
 
   <form action="/batch/findById" method="GET">
-    <label for="batchId">Enter batchId for Batch_findById: </label>
+    <label for="batchId">Enter batchId for <b>Batch_findById</b>: </label>
     <input id="batchId" type="text" size="100" name="batchId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -96,7 +95,7 @@
   <br>
 
   <form action="/batch/read" method="GET">
-    <label for="condition">Enter condition for Batch_findAll: </label>
+    <label for="condition">Enter condition for <b>Batch_findAll</b>: </label>
     <input id="condition" type="text" size="100" name="condition" placeholder="Condition string">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -104,7 +103,7 @@
   <br>
 
   <form action="/batch/deleteById" method="POST">
-    <label for="batchId">Enter batchId for Batch_deleteById: </label>
+    <label for="batchId">Enter batchId for <b>Batch_deleteById</b>: </label>
     <input id="batchId" type="text" size="100" name="batchId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -116,7 +115,7 @@
   <hr><br>
 
   <form action="/verify/email" method="GET">
-    <label for="email">Enter email address for Verify_email: </label>
+    <label for="email">Enter email address for <b>Verify_email</b>: </label>
     <input id="email" type="text" size="100" name="email" placeholder="Email address">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -124,7 +123,7 @@
   <br>
 
   <form action="/verify/batch" method="GET">
-    <label for="batchId">Enter batchId for Verify_batch: </label>
+    <label for="batchId">Enter batchId for <b>Verify_batch</b>: </label>
     <input id="batchId" type="text" size="100" name="batchId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -136,7 +135,7 @@
   <hr><br>
 
   <form action="/task/save" method="POST">
-    <label for="path">Enter task path for Task_save: </label>
+    <label for="path">Enter task path for <b>Task_save</b>: </label>
     <input id="path" type="text" size="100" name="path" placeholder="Path string">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -144,7 +143,7 @@
   <br>
 
   <form action="/task/findById" method="GET">
-    <label for="taskId">Enter taskId for Task_findById: </label>
+    <label for="taskId">Enter taskId for <b>Task_findById</b>: </label>
     <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -152,7 +151,7 @@
   <br>
 
   <form action="/task/read" method="GET">
-    <label for="condition">Enter condition for Task_findAll: </label>
+    <label for="condition">Enter condition for <b>Task_findAll</b>: </label>
     <input id="condition" type="text" size="100" name="condition" placeholder="Condition string">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -160,7 +159,7 @@
   <br>
 
   <form action="/task/deleteById" method="POST">
-    <label for="taskId">Enter taskId for Task_deleteById: </label>
+    <label for="taskId">Enter taskId for <b>Task_deleteById</b>: </label>
     <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
@@ -172,7 +171,7 @@
   <hr><br>
 
   <form action="/sender/executeTask" method="POST">
-    <label for="taskId">Enter taskId for Sender_executeTask: </label>
+    <label for="taskId">Enter taskId for <b>Sender_executeTask</b>: </label>
     <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">
     <input type="submit" value="SEND REQUEST">
   </form>
