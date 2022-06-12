@@ -41,10 +41,12 @@ router.get('/batch', async function (req, res) {
                     'valid': false
                 }
             );
+
+            await Batchlist.findByIdAndUpdate(req.query.batchId, { $pull: { 'to': email } });
         }
     };
 
-    res.status(200).json({ 'success': true, 'message': 'Batch verified', result: results });
+    res.status(200).json({ 'success': true, 'message': 'Batch verified and purified', result: results });
 
 });
 
