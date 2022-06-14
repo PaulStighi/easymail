@@ -158,6 +158,15 @@
 
   <br>
 
+  <form action="/task/updateById" method="POST">
+    <label for="taskId">Enter taskId and updated Task for <b>Task_updateById</b>: </label>
+    <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">
+    <input id="updated" type="json" size="100" name="updated" placeholder="Update document">
+    <input type="submit" value="SEND REQUEST">
+  </form>
+
+  <br>
+
   <form action="/task/deleteById" method="POST">
     <label for="taskId">Enter taskId for <b>Task_deleteById</b>: </label>
     <input id="taskId" type="text" size="100" name="taskId" placeholder="ObjectId value">

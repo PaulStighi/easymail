@@ -39,6 +39,24 @@ router.get('/read', async function (req, res) {
     res.status(200).json(tasks);
 });
 
+// Update one
+router.post('/updateById', async function (req, res) {
+    console.log('[' + new Date().toLocaleString() + '] Task in updating...');
+
+    Task.findByIdAndUpdate(req.body.taskId, JSON.parse(req.body.updated))
+        .then((doc) => {
+            if (!doc) {
+                res.status(400).json({ 'success': false, 'message': 'No task matching the id: ' + req.body.taskId });
+            }
+            else { 
+                Task.findById(req.body.taskId).then((updatedDoc) => res.status(200).json({ updatedDoc, 'message': 'Task updated successfully!' }));
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({ 'message': 'Error in updating Task details: ' + err });
+        });
+});
+
 // Delete one
 router.post('/deleteById', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Task in deleting...');
@@ -53,8 +71,8 @@ router.post('/deleteById', async function (req, res) {
             }
         })
         .catch((err) => {
-            res.status(500).send({ 'message': 'Error in saving Task details: ' + err });
-        })
+            res.status(500).send({ 'message': 'Error in deleting Task details: ' + err });
+        });
 });
 
 module.exports = router;
