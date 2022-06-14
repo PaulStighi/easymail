@@ -24,12 +24,10 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + 'index.html');
 });
 
-app.use('/batch', require('./routes/Batch'));
-app.use('/scheduler', require('./routes/Scheduler'));
+app.use('/batcher', require('./routes/Batcher'));
 app.use('/sender', require('./routes/Sender'));
-app.use('/task', require('./routes/Task'));
+app.use('/tasker', require('./routes/Tasker'));
 app.use('/templater', require('./routes/Templater'));
-app.use('/temporary', require('./routes/Temporary'));
-app.use('/verify', require('./routes/Verify'));
+app.use('/verifier', require('./routes/Verifier'));
 
 app.listen(secretData.port, () => console.log(`Server running on port ${secretData.port}`));
