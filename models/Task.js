@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
     templateId: { type: mongoose.Schema.Types.ObjectId },
-    batchlistId: { type: mongoose.Schema.Types.ObjectId },
+    batchId: { type: mongoose.Schema.Types.ObjectId },
     details: { type: Object },
     locals: { type: Object }
 }, { collection: 'tasks' });
