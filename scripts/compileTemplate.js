@@ -13,7 +13,7 @@ async function compileTemplate(task, target) {
         const details = Object.assign(
             _.get(task, 'details'),
             { 'to': target },
-            { 'html': compiledFunction(_.get(task, 'locals')) }
+            { 'html': compiledFunction(_.get(task, 'variableFields')) }
         );
 
         return details;
