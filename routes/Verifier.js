@@ -11,11 +11,18 @@ router.get('/', async function (req, res) {
 router.get('/email', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Email address in validation...');
 
-    if (await verifyEmail.verifyEmail(req.query.email)) {
-        res.status(200).json({ 'success': true, 'message': 'Address is valid' });
+    const result = await verifyEmail.verifyEmail(req.query.email);
+    
+    if (_.isNull(result)) {
+        res.status(400).json({ 'success': false, 'message': 'Error in verifing email' });
     }
     else {
-        res.status(200).json({ 'success': false, 'message': 'Address is not valid' });
+        if (result) {
+            res.status(200).json({ 'success': true, 'message': 'Address is valid' });
+        }
+        else {
+            res.status(200).json({ 'success': false, 'message': 'Address is not valid' });
+        }
     }
 });
 
@@ -26,23 +33,30 @@ router.get('/batch', async function (req, res) {
     let results = [];
 
     for (const email of batchlist) {
-        if (await verifyEmail.verifyEmail(email)) {
-            results.push(
-                {
-                    'address': email,
-                    'valid': true
-                }
-            );
+        const result = await verifyEmail.verifyEmail(email);
+
+        if (_.isNull(result)) {
+            res.status(400).json({ 'success': false, 'message': 'Error in verifing email' });
         }
         else {
-            results.push(
-                {
-                    'address': email,
-                    'valid': false
-                }
-            );
+            if (result) {
+                results.push(
+                    {
+                        'address': email,
+                        'valid': true
+                    }
+                );
+            }
+            else {
+                results.push(
+                    {
+                        'address': email,
+                        'valid': false
+                    }
+                );
 
-            await Batchlist.findByIdAndUpdate(req.query.batchId, { $pull: { 'to': email } });
+                await Batchlist.findByIdAndUpdate(req.query.batchId, { $pull: { 'to': email } });
+            }
         }
     };
 

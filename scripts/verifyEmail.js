@@ -10,7 +10,7 @@ async function verifyEmail(email) {
             verifier.verify(email, { hardRefresh: true }, (error, data) => {
                 if (error) {
                     console.log(error);
-                    res.status(400).json({ 'success': false, 'message': 'Error in verifing email' });
+                    return null;
                 }
 
                 const formatCheck = _.isEqual(_.get(data, 'formatCheck'), 'true');
