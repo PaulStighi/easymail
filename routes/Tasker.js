@@ -14,11 +14,16 @@ router.post('/save', async function (req, res) {
 
     const task = new Task(JSON.parse(importFile.importFile(req.body.path)));
 
-    try {
-        const doc = await task.save();
-        res.status(200).json({ 'success': true, 'message': 'Task details saved', result: doc });
-    } catch (err) {
-        res.status(400).json({ 'success': false, 'message': 'Error in saving Task details: ' + err });
+    if(task) {
+        try {
+            const doc = await task.save();
+            res.status(200).json({ 'success': true, 'message': 'Task details saved', result: doc });
+        } catch (err) {
+            res.status(400).json({ 'success': false, 'message': 'Error in saving Task details: ' + err });
+        }
+    }
+    else {
+        res.status(400).json({ 'success': false, 'message': 'Error in saving Task details: file not found' });
     }
 });
 

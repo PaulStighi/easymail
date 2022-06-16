@@ -14,19 +14,23 @@ router.post('/save', async function (req, res) {
 
     const B_content = importFile.importFile(req.body.path);
 
-    const addr = _.split(B_content, "\r\n");
-
-    const batchlist = new Batchlist(Object.assign(
-        { 'to': addr }
-    ));
-
-    try {
-        const doc = await batchlist.save();
-        res.status(200).json({ 'success': true, 'message': 'Batchlist details saved', result: doc });
-    } catch (err) {
-        res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: ' + err });
+    if(B_content) {
+        const addr = _.split(B_content, "\r\n");
+    
+        const batchlist = new Batchlist(Object.assign(
+            { 'to': addr }
+        ));
+    
+        try {
+            const doc = await batchlist.save();
+            res.status(200).json({ 'success': true, 'message': 'Batchlist details saved', result: doc });
+        } catch (err) {
+            res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: ' + err });
+        }        
     }
-
+    else {
+        res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: file not found'});
+    }
 });
 
 // Read one

@@ -13,15 +13,20 @@ router.post('/save', async function (req, res) {
 
     const T_content = importFile.importFile(req.body.path);
 
-    const template = new Template(Object.assign(
-        { 'content': T_content }
-    ));
-
-    try {
-        const doc = await template.save();
-        res.status(200).json({ 'success': true, 'message': 'Template details saved', result: doc });
-    } catch (err) {
-        res.status(400).json({ 'success': false, 'message': 'Error in saving Template details: ' + err });
+    if(T_content) {
+        const template = new Template(Object.assign(
+            { 'content': T_content }
+        ));
+    
+        try {
+            const doc = await template.save();
+            res.status(200).json({ 'success': true, 'message': 'Template details saved', result: doc });
+        } catch (err) {
+            res.status(400).json({ 'success': false, 'message': 'Error in saving Template details: ' + err });
+        }
+    }
+    else {
+        res.status(404).json({ 'success': false, 'message': 'Error in saving Template details: file not found'});
     }
 
 });
