@@ -36,7 +36,12 @@ router.get('/batch', async function (req, res) {
         const result = await verifyEmail.verifyEmail(email);
 
         if (_.isNull(result)) {
-            res.status(400).json({ 'success': false, 'message': 'Error in verifing email' });
+            results.push(
+                {
+                    'address': email,
+                    'valid': 'inconclusive'
+                }
+            );
         }
         else {
             if (result) {
