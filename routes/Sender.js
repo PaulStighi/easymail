@@ -32,7 +32,7 @@ router.post('/executeTask', async function (req, res) {
             });
     });
 
-    res.status(200).json({ 'success': true, 'message': 'Emails sent!' });
+    res.status(200).json({ 'success': true, 'message': 'Emails queued!' });
 });
 
 module.exports = router;
