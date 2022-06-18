@@ -32,7 +32,9 @@ router.post('/executeTask', async function (req, res) {
                     });
                 })
                 .catch((err) => res.status(400).json({ 'success': false, 'message': ('Error in compiling Template details: ' + err) }));
-        }).then(() => { res.status(200).json({ 'success': true, 'message': 'Emails queued!' }) });
+        });
+
+        res.status(200).json({ 'success': true, 'message': 'Emails queued!' });
     } catch (err) {
         res.status(400).json({ 'success': false, 'message': ('Error in sending Emails: ' + err) })
     }
