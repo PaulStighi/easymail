@@ -23,7 +23,7 @@ async function verifyEmail(email) {
                 else {
                     reject(false);
                 }
-            });
+            }).catch((err) => reject(null));
         });
     }
 

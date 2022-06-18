@@ -11,61 +11,75 @@ router.get('/', async function (req, res) {
 router.get('/email', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Email address in validation...');
 
-    const result = await verifyEmail.verifyEmail(req.query.email);
-    
-    if (_.isNull(result)) {
-        res.status(400).json({ 'success': false, 'message': 'Error in verifing email' });
-    }
-    else {
-        if (result) {
-            res.status(200).json({ 'success': true, 'message': 'Address is valid' });
+    try {
+        const result = await verifyEmail.verifyEmail(req.query.email);
+        
+        if (_.isNull(result)) {
+            res.status(400).json({ 'success': false, 'message': 'Error in verifing email' });
         }
         else {
-            res.status(200).json({ 'success': false, 'message': 'Address is not valid' });
+            if (result) {
+                res.status(200).json({ 'success': true, 'message': 'Address is valid' });
+            }
+            else {
+                res.status(200).json({ 'success': false, 'message': 'Address is not valid' });
+            }
         }
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in verifing email: ' + err });
     }
 });
 
 router.get('/batch', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batch email address in validation...');
 
-    const batchlist = _.get(await Batchlist.findById(req.query.batchId).exec(), 'to');
-    let results = [];
-
-    for (const email of batchlist) {
-        const result = await verifyEmail.verifyEmail(email);
-
-        if (_.isNull(result)) {
-            results.push(
-                {
-                    'address': email,
-                    'valid': 'inconclusive'
-                }
-            );
-        }
-        else {
-            if (result) {
+    try {
+        const batchlist = _.get(await Batchlist.findById(req.query.batchId).exec(), 'to');
+        let results = [];
+    
+        for (const email of batchlist) {
+            const result = await verifyEmail.verifyEmail(email);
+    
+            if (_.isNull(result)) {
                 results.push(
                     {
                         'address': email,
-                        'valid': true
+                        'valid': 'inconclusive'
                     }
                 );
             }
             else {
-                results.push(
-                    {
-                        'address': email,
-                        'valid': false
-                    }
-                );
-
-                await Batchlist.findByIdAndUpdate(req.query.batchId, { $pull: { 'to': email } });
+                if (result) {
+                    results.push(
+                        {
+                            'address': email,
+                            'valid': true
+                        }
+                    );
+                }
+                else {
+                    results.push(
+                        {
+                            'address': email,
+                            'valid': false
+                        }
+                    );
+    
+                    await Batchlist.findByIdAndUpdate(req.query.batchId, { $pull: { 'to': email } });
+                }
             }
-        }
-    };
+        };
 
-    res.status(200).json({ 'success': true, 'message': 'Batch verified and purified', result: results });
+        if (!_.isEmpty(results)) {
+            res.status(200).json({ 'success': true, 'message': 'Batch verified and purified', result: results });
+        }
+        else {
+            res.status(400).json({ 'success': false, 'message': 'Error in verifing batchlist'});
+        }
+    
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in verifing batchlist: ' + err });
+    }
 
 });
 

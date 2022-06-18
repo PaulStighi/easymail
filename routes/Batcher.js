@@ -12,24 +12,28 @@ router.get('/', async function (req, res) {
 router.post('/save', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batchlist in saving...');
 
-    const B_content = importFile.importFile(req.body.path);
-
-    if(B_content) {
-        const addr = _.split(B_content, "\r\n");
+    try {
+        const B_content = importFile.importFile(req.body.path);
     
-        const batchlist = new Batchlist(Object.assign(
-            { 'to': addr }
-        ));
-    
-        try {
-            const doc = await batchlist.save();
-            res.status(200).json({ 'success': true, 'message': 'Batchlist details saved', result: doc });
-        } catch (err) {
-            res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: ' + err });
-        }        
-    }
-    else {
-        res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: file not found'});
+        if(B_content) {
+            const addr = _.split(B_content, "\r\n");
+        
+            const batchlist = new Batchlist(Object.assign(
+                { 'to': addr }
+            ));
+        
+            try {
+                const doc = await batchlist.save();
+                res.status(200).json({ 'success': true, 'message': 'Batchlist details saved', result: doc });
+            } catch (err) {
+                res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: ' + err });
+            }        
+        }
+        else {
+            res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: file not found'});
+        }
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in saving Batchlist details: ' + err });
     }
 });
 
@@ -37,17 +41,26 @@ router.post('/save', async function (req, res) {
 router.get('/findById', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batchlist in finding...');
 
-    const batchlist = await Batchlist.findById(req.query.batchId).exec();
-    res.status(200).json(batchlist);
+    try {
+        const batchlist = await Batchlist.findById(req.query.batchId).exec();
+        
+        res.status(200).json(batchlist);
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in finding Batchlist details: ' + err });
+    }
 });
 
 // Read all
 router.get('/read', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Batchlist in finding all with condition...');
 
-    const batchlists = await Batchlist.find(req.query.condition ? JSON.parse(req.query.condition) : {}).exec();
-
-    res.status(200).json(batchlists);
+    try {
+        const batchlists = await Batchlist.find(req.query.condition ? JSON.parse(req.query.condition) : {}).exec();
+    
+        res.status(200).json(batchlists);
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in finding all with condition Batchlist details: ' + err });
+    }
 });
 
 // Delete one
@@ -64,7 +77,7 @@ router.post('/deleteById', async function (req, res) {
             }
         })
         .catch((err) => {
-            res.status(500).send({ 'message': 'Error in saving Batchlist details: ' + err });
+            res.status(500).send({ 'message': 'Error in deleting Batchlist details: ' + err });
         })
 });
 

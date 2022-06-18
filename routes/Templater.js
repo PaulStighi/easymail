@@ -11,23 +11,29 @@ router.get('/', async function (req, res) {
 router.post('/save', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Template in saving...');
 
-    const T_content = importFile.importFile(req.body.path);
-
-    if(T_content) {
-        const template = new Template(Object.assign(
-            { 'content': T_content }
-        ));
-    
-        try {
-            const doc = await template.save();
-            res.status(200).json({ 'success': true, 'message': 'Template details saved', result: doc });
-        } catch (err) {
-            res.status(400).json({ 'success': false, 'message': 'Error in saving Template details: ' + err });
+    try {
+        const T_content = importFile.importFile(req.body.path);
+        
+        if(T_content) {
+            const template = new Template(Object.assign(
+                { 'content': T_content }
+            ));
+        
+            try {
+                const doc = await template.save();
+                res.status(200).json({ 'success': true, 'message': 'Template details saved', result: doc });
+            } catch (err) {
+                res.status(400).json({ 'success': false, 'message': 'Error in saving Template details: ' + err });
+            }
         }
+        else {
+            res.status(404).json({ 'success': false, 'message': 'Error in saving Template details: file not found'});
+        }
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in saving Template details: ' + err });
     }
-    else {
-        res.status(404).json({ 'success': false, 'message': 'Error in saving Template details: file not found'});
-    }
+    
+
 
 });
 
@@ -35,17 +41,27 @@ router.post('/save', async function (req, res) {
 router.get('/findById', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Template in finding...');
 
-    const template = await Template.findById(req.query.templateId).exec();
-    res.status(200).json(template);
+    try {
+        const template = await Template.findById(req.query.templateId).exec();
+
+        res.status(200).json(template);
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in finding Template details: ' + err });
+    }
 });
 
 // Read all
 router.get('/read', async function (req, res) {
     console.log('[' + new Date().toLocaleString() + '] Template in finding all with condition...');
 
-    const templates = await Template.find(req.query.condition ? JSON.parse(req.query.condition) : {}).exec();
+    try { 
+        const templates = await Template.find(req.query.condition ? JSON.parse(req.query.condition) : {}).exec();
+    
+        res.status(200).json(templates);
+    } catch (err) {
+        res.status(400).json({ 'success': false, 'message': 'Error in finding all with condition Template details: ' + err });
 
-    res.status(200).json(templates);
+    }
 });
 
 // Delete one
@@ -62,7 +78,7 @@ router.post('/deleteById', async function (req, res) {
             }
         })
         .catch((err) => {
-            res.status(500).send({ 'message': 'Error in saving Template details: ' + err });
+            res.status(500).send({ 'message': 'Error in deleting Template details: ' + err });
         })
 });
 
