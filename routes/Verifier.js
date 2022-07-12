@@ -39,6 +39,7 @@ router.get('/batch', async function (req, res) {
     
         for (const email of batchlist) {
             const result = await verifyEmail.verifyEmail(email);
+            console.log('[' + new Date().toLocaleString() + '] Email ' + email + ' in validation...');
     
             if (_.isNull(result)) {
                 results.push(

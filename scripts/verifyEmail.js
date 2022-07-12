@@ -9,8 +9,8 @@ async function verifyEmail(email) {
         return new Promise((resolve, reject) => {
             verifier.verify(email, { hardRefresh: true }, (error, data) => {
                 if (error) {
-                    console.log(error);
-                    return null;
+                    console.log('[' + new Date().toLocaleString() + '] ' + email + ' ' + error);
+                    reject(false);
                 }
 
                 const formatCheck = _.isEqual(_.get(data, 'formatCheck'), 'true');
